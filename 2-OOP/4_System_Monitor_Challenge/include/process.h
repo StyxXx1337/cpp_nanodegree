@@ -32,7 +32,7 @@ class Process {
   std::string user_;
 
   long upTime_ {1};
-  float cpuUsg_ {0};
+  float cpuUsg_ {.0};
 };
 
 #endif

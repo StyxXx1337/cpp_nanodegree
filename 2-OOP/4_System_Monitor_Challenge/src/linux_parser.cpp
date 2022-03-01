@@ -364,6 +364,7 @@ string LinuxParser::User(int pid) {
 long LinuxParser::UpTime(int pid) {
   std::ifstream stream {kProcDirectory + to_string(pid) + kStatFilename};
   std::string line;
+  int hz = sysconf(_SC_CLK_TCK);
   long startTime {0};
 
   if (stream.is_open()){
@@ -379,6 +380,7 @@ long LinuxParser::UpTime(int pid) {
     ss >> startTime;
   }
   long systemUpTime = LinuxParser::UpTime();
+  long processUpTime = systemUpTime - (startTime/hz);
 
-  return systemUpTime - startTime;
+  return processUpTime;
 }
