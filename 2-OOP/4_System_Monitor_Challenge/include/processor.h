@@ -5,10 +5,9 @@
 
 class Processor {
  public:
-  Processor(); // TODO: Make a initializer to save the amount of cpus
-  float Utilization();  // TODO: See src/processor.cpp
+  Processor();
+  float Utilization();
 
-  // TODO: Declare any necessary private members
  private:
   float usg {0};
   int nCpus {0};

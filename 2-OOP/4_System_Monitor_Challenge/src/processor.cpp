@@ -5,7 +5,6 @@ Processor::Processor(){
   nCpus = LinuxParser::CpuUtilization().size() - 1;
 }
 
-// TODO: Return the aggregate CPU utilization
 float Processor::Utilization() {
   long total {LinuxParser::Jiffies()};
   long idle {LinuxParser::IdleJiffies()};
