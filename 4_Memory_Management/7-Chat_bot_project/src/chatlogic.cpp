@@ -32,7 +32,7 @@ ChatLogic::~ChatLogic()
 {
     //// STUDENT CODE
     ////
-
+    std::cout << "Calling Destructor" << std::endl;
     // delete chatbot instance
     delete _chatBot;
 
@@ -128,7 +128,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                     {
                         //// STUDENT CODE
                         ////
-
+                        
                         // check if node with this ID exists already
                         auto newNode = std::find_if(_nodes.begin(), _nodes.end(), [&id](std::shared_ptr<GraphNode> node) { return node->GetID() == id; });
 
@@ -146,7 +146,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                         ////
                         //// EOF STUDENT CODE
                     }
-
+    
                     // edge-based processing
                     if (type->second == "EDGE")
                     {
@@ -165,19 +165,21 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                             auto childNode = std::find_if(_nodes.begin(), _nodes.end(), [&childToken](std::shared_ptr<GraphNode> node) { return node->GetID() == std::stoi(childToken->second); });
 
                             // create new edge
-                            std::unique_ptr<GraphEdge> edge (new GraphEdge(id));
-                            // INFO: Pass on Raw Pointers since Edges don't own the Nodes they are pointing to.
+                            std::unique_ptr<GraphEdge> edge = std::make_unique<GraphEdge>(id);
+               
+                            // INFO: Pass on Raw Pointer since Edges don't own the Nodes they are pointing to.
                             edge->SetChildNode(childNode->get());
                             edge->SetParentNode(parentNode->get());
-                            _edges.push_back(std::move(edge));
-
-                            // find all keywords for current node
-                            AddAllTokensToElement("KEYWORD", tokens, *edge);
-                            
+                
                             // store reference in child node and parent node
-                            // TODO: Move the Edge to ParentNode since the Parent should own the child.
                             (*childNode)->AddEdgeToParentNode(edge.get());
                             (*parentNode)->AddEdgeToChildNode(edge.get());
+                
+                            // find all keywords for current node
+                            AddAllTokensToElement("KEYWORD", tokens, *edge);
+                            // INFO: Put this as last so that _edges can be a vector of unique_ptr
+                            _edges.emplace_back(std::move(edge));
+                            
                         }
 
                         ////
@@ -207,6 +209,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     // INFO: Rootnode points to an other Node, so not sure if Shared Pointer is the right choice here
     //       Weak Pointer to Unique Pointer would be better I think, but I can't make a weak pointer to a Unique Pointers
     //       On the other side I am not sure if makeing all the _nodes shared is a good representation.
+    std::cout << "Setting Rootnode" << std::endl; 
     std::shared_ptr<GraphNode> rootNode = nullptr;
     for (auto it = std::begin(_nodes); it != std::end(_nodes); ++it)
     {

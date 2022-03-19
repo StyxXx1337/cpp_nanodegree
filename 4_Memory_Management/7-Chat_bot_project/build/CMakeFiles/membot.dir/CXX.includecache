@@ -6,11 +6,47 @@
 
 #IncludeRegexTransform: 
 
+/mnt/data/05_Documents/01_Programming/06_C++/Nanodegree/4_Memory_Management/7-Chat_bot_project/src/chatbot.cpp
+iostream
+-
+random
+-
+algorithm
+-
+ctime
+-
+chatlogic.h
+/mnt/data/05_Documents/01_Programming/06_C++/Nanodegree/4_Memory_Management/7-Chat_bot_project/src/chatlogic.h
+graphnode.h
+/mnt/data/05_Documents/01_Programming/06_C++/Nanodegree/4_Memory_Management/7-Chat_bot_project/src/graphnode.h
+graphedge.h
+/mnt/data/05_Documents/01_Programming/06_C++/Nanodegree/4_Memory_Management/7-Chat_bot_project/src/graphedge.h
+chatbot.h
+/mnt/data/05_Documents/01_Programming/06_C++/Nanodegree/4_Memory_Management/7-Chat_bot_project/src/chatbot.h
+
 /mnt/data/05_Documents/01_Programming/06_C++/Nanodegree/4_Memory_Management/7-Chat_bot_project/src/chatbot.h
 wx/bitmap.h
 -
 string
 -
+
+/mnt/data/05_Documents/01_Programming/06_C++/Nanodegree/4_Memory_Management/7-Chat_bot_project/src/chatgui.cpp
+memory
+-
+wx/filename.h
+-
+wx/colour.h
+-
+wx/image.h
+-
+string
+-
+chatbot.h
+/mnt/data/05_Documents/01_Programming/06_C++/Nanodegree/4_Memory_Management/7-Chat_bot_project/src/chatbot.h
+chatlogic.h
+/mnt/data/05_Documents/01_Programming/06_C++/Nanodegree/4_Memory_Management/7-Chat_bot_project/src/chatlogic.h
+chatgui.h
+/mnt/data/05_Documents/01_Programming/06_C++/Nanodegree/4_Memory_Management/7-Chat_bot_project/src/chatgui.h
 
 /mnt/data/05_Documents/01_Programming/06_C++/Nanodegree/4_Memory_Management/7-Chat_bot_project/src/chatgui.h
 wx/wx.h
