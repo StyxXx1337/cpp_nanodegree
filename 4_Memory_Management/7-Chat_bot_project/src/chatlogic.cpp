@@ -33,9 +33,7 @@ ChatLogic::~ChatLogic()
     //// STUDENT CODE
     ////
     std::cout << "Calling Destructor" << std::endl;
-    // delete chatbot instance
 
-    // delete all nodes
     for (auto it = std::begin(_nodes); it != std::end(_nodes); ++it)
     {
       // TODO: Check if that if-clause is required.
@@ -198,10 +196,6 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     ////
 
     // identify root node
-    // INFO: Rootnode points to an other Node, so not sure if Shared Pointer is the right choice here
-    //       Weak Pointer to Unique Pointer would be better I think, but I can't make a weak pointer to a Unique Pointers
-    //       On the other side I am not sure if makeing all the _nodes shared is a good representation.
-    std::cout << "Setting Rootnode" << std::endl; 
     GraphNode* rootNode = nullptr;
     for (auto it = std::begin(_nodes); it != std::end(_nodes); ++it)
     {
@@ -220,15 +214,14 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
         }
     }
     
-    ChatBot _chatBot = (ChatBot("../images/chatbot.png"));
+    ChatBot local_chatBot = (ChatBot("../images/chatbot.png"));
 
     // add pointer to chatlogic so that chatbot answers can be passed on to the GUI
-    _chatBot.SetChatLogicHandle(this);
+    local_chatBot.SetChatLogicHandle(this);
 
     // add chatbot to graph root node
-    _chatBot.SetRootNode(rootNode);
-    rootNode->MoveChatbotHere(std::move(_chatBot));
-    std::cout << "Chatbot moved to Root Node" << std::endl;
+    local_chatBot.SetRootNode(rootNode);
+    rootNode->MoveChatbotHere(std::move(local_chatBot));
     ////
     //// EOF STUDENT CODE
 }
