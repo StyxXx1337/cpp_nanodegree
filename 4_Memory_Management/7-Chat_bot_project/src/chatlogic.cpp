@@ -34,7 +34,6 @@ ChatLogic::~ChatLogic()
     ////
     std::cout << "Calling Destructor" << std::endl;
     // delete chatbot instance
-    delete _chatBot;
 
     // delete all nodes
     for (auto it = std::begin(_nodes); it != std::end(_nodes); ++it)
@@ -42,14 +41,6 @@ ChatLogic::~ChatLogic()
       // TODO: Check if that if-clause is required.
       if ((*it) != nullptr){(*it) = nullptr;}
     }
-
-    // delete all edges
-    for (auto it = std::begin(_edges); it != std::end(_edges); ++it)
-    {
-      // TODO: Check if that if-clause is required.
-      if ((*it) != nullptr){(*it) = nullptr;}
-    }
-
     ////
     //// EOF STUDENT CODE
 }
@@ -130,13 +121,13 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                         ////
                         
                         // check if node with this ID exists already
-                        auto newNode = std::find_if(_nodes.begin(), _nodes.end(), [&id](std::shared_ptr<GraphNode> node) { return node->GetID() == id; });
+                        auto newNode = std::find_if(_nodes.begin(), _nodes.end(), [&id](const std::unique_ptr<GraphNode> &node) { return node->GetID() == id; });
 
                         // create new element if ID does not yet exist
                         if (newNode == _nodes.end())
                         {
                             // INFO: Wanted to solve it with Unique Poiters but didn't work... 
-                            _nodes.emplace_back(std::move(std::make_shared<GraphNode>(id)));
+                            _nodes.emplace_back(std::make_unique<GraphNode>(id));
                             newNode = _nodes.end() - 1; // get iterator to last element
 
                             // add all answers to current node
@@ -161,8 +152,8 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                         {
                             // get iterator on incoming and outgoing node via ID search
                             // INFO: Using Unique Pointer since the ChatLogic owns the Edges and should cleanup when ChatLogic is destroyed.
-                            auto parentNode = std::find_if(_nodes.begin(), _nodes.end(), [&parentToken](std::shared_ptr<GraphNode> node) { return node->GetID() == std::stoi(parentToken->second); });
-                            auto childNode = std::find_if(_nodes.begin(), _nodes.end(), [&childToken](std::shared_ptr<GraphNode> node) { return node->GetID() == std::stoi(childToken->second); });
+                            auto parentNode = std::find_if(_nodes.begin(), _nodes.end(), [&parentToken](const std::unique_ptr<GraphNode>& node) { return node->GetID() == std::stoi(parentToken->second); });
+                            auto childNode = std::find_if(_nodes.begin(), _nodes.end(), [&childToken](const std::unique_ptr<GraphNode>& node) { return node->GetID() == std::stoi(childToken->second); });
 
                             // create new edge
                             std::unique_ptr<GraphEdge> edge = std::make_unique<GraphEdge>(id);
@@ -211,7 +202,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     //       Weak Pointer to Unique Pointer would be better I think, but I can't make a weak pointer to a Unique Pointers
     //       On the other side I am not sure if makeing all the _nodes shared is a good representation.
     std::cout << "Setting Rootnode" << std::endl; 
-    std::shared_ptr<GraphNode> rootNode = nullptr;
+    GraphNode* rootNode = nullptr;
     for (auto it = std::begin(_nodes); it != std::end(_nodes); ++it)
     {
         // search for nodes which have no incoming edges
@@ -220,7 +211,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 
             if (rootNode == nullptr)
             {   
-                rootNode = (*it); // assign current node to root
+                rootNode = (*it).get(); // assign current node to root
             }
             else
             {
@@ -235,10 +226,9 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
     _chatBot.SetChatLogicHandle(this);
 
     // add chatbot to graph root node
-    _chatBot.SetRootNode(rootNode.get());
-    std::cout << "Root Node set.";
-    rootNode->MoveChatbotHere(_chatBot);
-    std::cout << "Chatbot moved to Root Node";
+    _chatBot.SetRootNode(rootNode);
+    rootNode->MoveChatbotHere(std::move(_chatBot));
+    std::cout << "Chatbot moved to Root Node" << std::endl;
     ////
     //// EOF STUDENT CODE
 }
