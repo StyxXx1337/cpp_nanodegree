@@ -19,10 +19,10 @@ ChatLogic::ChatLogic()
     ////
 
     // create instance of chatbot
-    _chatBot = new ChatBot("../images/chatbot.png");
+    // _chatBot = new ChatBot("../images/chatbot.png");
 
     // add pointer to chatlogic so that chatbot answers can be passed on to the GUI
-    _chatBot->SetChatLogicHandle(this);
+    // _chatBot->SetChatLogicHandle(this);
 
     ////
     //// EOF STUDENT CODE
@@ -170,15 +170,16 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
                             // INFO: Pass on Raw Pointer since Edges don't own the Nodes they are pointing to.
                             edge->SetChildNode(childNode->get());
                             edge->SetParentNode(parentNode->get());
-                
-                            // store reference in child node and parent node
-                            (*childNode)->AddEdgeToParentNode(edge.get());
-                            (*parentNode)->AddEdgeToChildNode(edge.get());
-                
+                            
                             // find all keywords for current node
                             AddAllTokensToElement("KEYWORD", tokens, *edge);
                             // INFO: Put this as last so that _edges can be a vector of unique_ptr
-                            _edges.emplace_back(std::move(edge));
+                            _edges.emplace_back(edge.get());
+                
+                            // store reference in child node and parent node
+                            (*childNode)->AddEdgeToParentNode(edge.get());
+                            (*parentNode)->AddEdgeToChildNode(std::move(edge));
+                
                             
                         }
 
@@ -218,8 +219,7 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
         {
 
             if (rootNode == nullptr)
-            {   // HERE: Continue here!
-                // >>>: Check! 
+            {   
                 rootNode = (*it); // assign current node to root
             }
             else
@@ -228,11 +228,17 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
             }
         }
     }
+    
+    ChatBot _chatBot = (ChatBot("../images/chatbot.png"));
+
+    // add pointer to chatlogic so that chatbot answers can be passed on to the GUI
+    _chatBot.SetChatLogicHandle(this);
 
     // add chatbot to graph root node
-    _chatBot->SetRootNode(rootNode.get());
+    _chatBot.SetRootNode(rootNode.get());
+    std::cout << "Root Node set.";
     rootNode->MoveChatbotHere(_chatBot);
-    
+    std::cout << "Chatbot moved to Root Node";
     ////
     //// EOF STUDENT CODE
 }

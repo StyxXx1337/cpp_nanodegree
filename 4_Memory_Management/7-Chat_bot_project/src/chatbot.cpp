@@ -28,7 +28,7 @@ ChatBot::ChatBot(std::string filename)
     _image = new wxBitmap(filename, wxBITMAP_TYPE_PNG);
 }
 
-ChatBot::~ChatBot()
+ChatBot::~ChatBot() // 1. Destructor
 {
     std::cout << "ChatBot Destructor" << std::endl;
 
@@ -43,7 +43,8 @@ ChatBot::~ChatBot()
 
 //// STUDENT CODE 
 //// Exclusive Ownership there should only be one bot per app.
-ChatBot::ChatBot(ChatBot& cb){
+ChatBot::ChatBot(ChatBot& cb) // 2. Copy Constructor
+{
   std::cout << "ChatBot Copy Constructor" << std::endl;
   
   _image = cb._image;
@@ -55,7 +56,22 @@ ChatBot::ChatBot(ChatBot& cb){
 
 }
 
-ChatBot::ChatBot(ChatBot&& cb){
+ChatBot& ChatBot::operator=(ChatBot& cb) // 3. Copy Assignment
+{
+  std::cout << "ChatBot Copy Assignement" << std::endl;
+
+  _image = cb._image;
+  cb._image = nullptr;
+  _chatLogic = cb._chatLogic;
+  cb._chatLogic = nullptr;
+  _rootNode = cb._rootNode;
+  cb._rootNode = nullptr;
+
+  return *this;
+}
+
+ChatBot::ChatBot(ChatBot&& cb) // 4. Move Construtor
+{
   std::cout << "ChatBot Move Constructor" << std::endl;
 
   _image = cb._image;
@@ -65,6 +81,22 @@ ChatBot::ChatBot(ChatBot&& cb){
   _rootNode = cb._rootNode;
   cb._rootNode = nullptr;
 }
+
+ChatBot& ChatBot::operator=(ChatBot&& cb) // 5. Move Assignment
+{
+  std::cout << "ChatBot Move Assignment" << std::endl;
+  
+  _image = cb._image;
+  cb._image = nullptr;
+  _chatLogic = cb._chatLogic;
+  cb._chatLogic = nullptr;
+  _rootNode = cb._rootNode;
+  cb._rootNode = nullptr;
+
+  return *this;
+}
+
+
 ////
 //// EOF STUDENT CODE
 

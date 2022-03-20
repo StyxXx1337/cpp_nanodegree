@@ -31,7 +31,8 @@ public:
     ////
     ChatBot(ChatBot& cb);
     ChatBot(ChatBot&& cb);
-    // ChatBot& operator=(const Chatbot& cb);
+    ChatBot& operator=(ChatBot& cb);
+    ChatBot& operator=(ChatBot&& cb);
     //// 
     ////
     //// EOF STUDENT CODE
