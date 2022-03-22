@@ -35,7 +35,6 @@ ChatBot::~ChatBot() // 1. Destructor
     // deallocate heap memory
     if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
     {
-        std::cout << "Address of Image: " << &_image << std::endl;
         delete _image;
         _image = NULL;
     }
@@ -105,7 +104,7 @@ void ChatBot::ReceiveMessageFromUser(std::string message)
     // loop over all edges and keywords and compute Levenshtein distance to query
     typedef std::pair<GraphEdge *, int> EdgeDist;
     std::vector<EdgeDist> levDists; // format is <ptr,levDist>
-
+    std::cout << "Receive Message from User" << std::endl;
     for (size_t i = 0; i < _currentNode->GetNumberOfChildEdges(); ++i)
     {
         GraphEdge *edge = _currentNode->GetChildEdgeAtIndex(i);
@@ -145,7 +144,10 @@ void ChatBot::SetCurrentNode(GraphNode *node)
     std::string answer = answers.at(dis(generator));
 
     // send selected node answer to user
+    std::cout << "Sending Message to User" << std::endl; 
     _chatLogic->SendMessageToUser(answer);
+    std::cout << "Send Message to User" << std::endl; 
+
 }
 
 int ChatBot::ComputeLevenshteinDistance(std::string s1, std::string s2)

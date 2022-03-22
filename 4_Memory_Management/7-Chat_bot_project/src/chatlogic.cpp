@@ -221,7 +221,9 @@ void ChatLogic::LoadAnswerGraphFromFile(std::string filename)
 
     // add chatbot to graph root node
     local_chatBot.SetRootNode(rootNode);
+    std::cout << "Root Node set" << std::endl;
     rootNode->MoveChatbotHere(std::move(local_chatBot));
+    std::cout << "Chat bot move" << std::endl;
     ////
     //// EOF STUDENT CODE
 }
@@ -237,12 +239,14 @@ void ChatLogic::SetChatbotHandle(ChatBot *chatbot)
 }
 
 void ChatLogic::SendMessageToChatbot(std::string message)
-{
+{ 
+    std::cout << "Send Message to Chatbot" << std::endl; 
     _chatBot->ReceiveMessageFromUser(message);
 }
 
 void ChatLogic::SendMessageToUser(std::string message)
 {
+    std::cout << "Print Chatbot Respon" << std::endl; 
     _panelDialog->PrintChatbotResponse(message);
 }
 

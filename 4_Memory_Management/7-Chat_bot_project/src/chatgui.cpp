@@ -136,7 +136,7 @@ ChatBotPanelDialog::~ChatBotPanelDialog()
     //// STUDENT CODE
     ////
 
-//    _chatLogic.release();
+    _chatLogic.release();
 
     ////
     //// EOF STUDENT CODE
@@ -145,9 +145,13 @@ ChatBotPanelDialog::~ChatBotPanelDialog()
 void ChatBotPanelDialog::AddDialogItem(wxString text, bool isFromUser)
 {
     // add a single dialog element to the sizer
+    std::cout << "ChatBot Panel Dialog Item";
     ChatBotPanelDialogItem *item = new ChatBotPanelDialogItem(this, text, isFromUser);
+    std::cout << "ChatBot Panel Dialog Item created";
     _dialogSizer->Add(item, 0, wxALL | (isFromUser == true ? wxALIGN_LEFT : wxALIGN_RIGHT), 8);
+    std::cout << "ChatBot Panel Dialog Item added";
     _dialogSizer->Layout();
+    std::cout << "ChatBot Panel Dialog Layout";
 
     // make scrollbar show up
     this->FitInside(); // ask the sizer about the needed size
@@ -164,7 +168,9 @@ void ChatBotPanelDialog::AddDialogItem(wxString text, bool isFromUser)
 void ChatBotPanelDialog::PrintChatbotResponse(std::string response)
 {
     // convert string into wxString and add dialog element
+    std::cout << "Entered Panel Dialaog Print Response" << std::endl;   
     wxString botText(response.c_str(), wxConvUTF8);
+    std::cout << "Bot text passed" << std::endl;
     AddDialogItem(botText, false);
 }
 
