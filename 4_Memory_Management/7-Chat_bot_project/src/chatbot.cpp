@@ -35,14 +35,11 @@ ChatBot::~ChatBot() // 1. Destructor
     // deallocate heap memory
     if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
     {
-        std::cout << "Address of Image: " << &_image << std::endl;
         delete _image;
         _image = NULL;
     }
 }
 
-//// STUDENT CODE 
-//// Exclusive Ownership there should only be one bot per app.
 ChatBot::ChatBot(ChatBot& cb) // 2. Copy Constructor
 {
   std::cout << "ChatBot Copy Constructor" << std::endl;
@@ -77,6 +74,8 @@ ChatBot::ChatBot(ChatBot&& cb) // 4. Move Construtor
   _image = cb._image;
   cb._image = nullptr;
   _chatLogic = cb._chatLogic;
+  _chatLogic->SetChatbotHandle(this);
+
   cb._chatLogic = nullptr;
   _rootNode = cb._rootNode;
   cb._rootNode = nullptr;
@@ -89,16 +88,14 @@ ChatBot& ChatBot::operator=(ChatBot&& cb) // 5. Move Assignment
   _image = cb._image;
   cb._image = nullptr;
   _chatLogic = cb._chatLogic;
+  _chatLogic->SetChatbotHandle(this);
+
   cb._chatLogic = nullptr;
   _rootNode = cb._rootNode;
   cb._rootNode = nullptr;
 
   return *this;
 }
-
-
-////
-//// EOF STUDENT CODE
 
 void ChatBot::ReceiveMessageFromUser(std::string message)
 {
