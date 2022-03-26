@@ -56,8 +56,7 @@ ChatBot& ChatBot::operator=(ChatBot& cb) // 3. Copy Assignment
 {
   std::cout << "ChatBot Copy Assignement" << std::endl;
 
-  _image = cb._image;
-  cb._image = nullptr;
+  _image = new wxBitmap(*cb._image);
   _chatLogic = cb._chatLogic;
   cb._chatLogic = nullptr;
   _rootNode = cb._rootNode;
