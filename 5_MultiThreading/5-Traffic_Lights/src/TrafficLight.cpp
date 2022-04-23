@@ -15,7 +15,7 @@ T MessageQueue<T>::receive()
     // to wait for and receive new messages and pull them from the queue using move semantics. 
     // The received object should then be returned by the receive function. 
     std::unique_lock<std::mutex> lck;
-    _condition.wait(lck, [this]{!_queue.empty();});
+    _condition.wait(lck, [this]{ return !_queue.empty();});
 
     T message = std::move(_queue.back());
     _queue.pop_back();
@@ -49,7 +49,7 @@ void TrafficLight::waitForGreen()
     // runs and repeatedly calls the receive function on the message queue. 
     // Once it receives TrafficLightPhase::kgreen, the method returns.
     while (true) {
-      if (_messages.receive()==kgreen){
+      if (_messages.receive()==TrafficLightPhase::kgreen){
         return;
       }
     }
@@ -64,7 +64,7 @@ TrafficLightPhase TrafficLight::getCurrentPhase()
 void TrafficLight::simulate()
 {
     // FP.2b : Finally, the private method „cycleThroughPhases“ should be started in a thread when the public method „simulate“ is called. To do this, use the thread queue in the base class. 
-    threads.push_back(std::move(std::thread(&TrafficLight::cycleThroughPhases)));  
+    threads.push_back(std::move(std::thread(&TrafficLight::cycleThroughPhases, this)));  
 }
 
 // virtual function which is executed in a thread
@@ -85,11 +85,11 @@ void TrafficLight::cycleThroughPhases()
      
       if (duration.count() >= cycle_duration){ 
         // toggle red/green
-        if (this->_currentPhase == kred) {
-          this->_currentPhase = kgreen;
+        if (this->_currentPhase == TrafficLightPhase::kred) {
+          this->_currentPhase = TrafficLightPhase::kgreen;
         }
         else{
-          this->_currentPhase = kred;
+          this->_currentPhase = TrafficLightPhase::kred;
         }
         // Send Update Method 
         this->_messages.send(std::move(this->_currentPhase));     
