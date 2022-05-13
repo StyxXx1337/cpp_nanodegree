@@ -1,4 +1,5 @@
 #include "renderer.h"
+#include "objects.h"
 #include <iostream>
 #include <string>
 
@@ -38,7 +39,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const &food) {
+void Renderer::Render(Snake const snake, SDL_Point const &food, Objects const &objects) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
@@ -52,6 +53,14 @@ void Renderer::Render(Snake const snake, SDL_Point const &food) {
   block.x = food.x * block.w;
   block.y = food.y * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);
+
+  // Render Objects 
+  SDL_SetRenderDrawColor(sdl_renderer, 0xEE, 0xEE, 0xEE, 0xFF);
+  for (auto const &object : objects.objects){
+    block.x = object.x_ * block.w;
+    block.y = object.y_ * block.h;
+    SDL_RenderFillRect(sdl_renderer, &block);
+  }
 
   // Render snake's body
   SDL_SetRenderDrawColor(sdl_renderer, 0xFF, 0xFF, 0xFF, 0xFF);

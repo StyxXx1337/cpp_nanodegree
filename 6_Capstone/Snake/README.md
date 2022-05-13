@@ -30,6 +30,12 @@ In this project, you can build your own C++ application or extend this Snake gam
 3. Compile: `cmake .. && make`
 4. Run it: `./SnakeGame`.
 
+## Added features
+
+1. [X] Added static objects that kill when you hit them
+2. [ ] Add Walls
+3. [ ] Add moving objects that kill you when you hit them
+4. [ ] Add special fruits that disappear after certain time again
 
 ## CC Attribution-ShareAlike 4.0 International
 

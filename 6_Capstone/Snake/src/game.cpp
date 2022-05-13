@@ -25,7 +25,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
-    renderer.Render(snake, food);
+    renderer.Render(snake, food, objects);
 
     frame_end = SDL_GetTicks();
 
@@ -55,11 +55,44 @@ void Game::PlaceFood() {
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
+    bool already_occupied {false};
     // Check that the location is not occupied by a snake item before placing
     // food.
+
+    for (auto const &object : objects.objects){
+      if (object.x_ == x && object.y_ == y){
+        already_occupied = true;
+        break;
+      }
+    }
+
     if (!snake.SnakeCell(x, y)) {
       food.x = x;
       food.y = y;
+      return;
+    }
+  }
+}
+
+void Game::PlaceObject() {
+  int x, y;
+  while (true) {
+    x = random_w(engine);
+    y = random_h(engine);
+    bool already_occupied {false};
+    
+    // Check that the location is not occupied by a snake item before placing
+    // the object
+
+    for (auto const &object : objects.objects){
+      if (object.x_ == x && object.y_ == y){
+        already_occupied = true;
+        break;
+      }
+    }
+
+    if (!snake.SnakeCell(x, y) && !(food.x == x && food.y == y) && !already_occupied) {
+      objects.objects.push_back(Object(x, y));
       return;
     }
   }
@@ -77,9 +110,15 @@ void Game::Update() {
   if (food.x == new_x && food.y == new_y) {
     score++;
     PlaceFood();
+    if (score % 10 == 0){
+      PlaceObject();
+    }
     // Grow snake and increase speed.
     snake.GrowBody();
     snake.speed += 0.02;
+  }
+  if (objects.isThereAnObject(new_x, new_y) == true){
+    snake.alive = false;
   }
 }
 
