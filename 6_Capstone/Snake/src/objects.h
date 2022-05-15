@@ -14,6 +14,7 @@ public:
   Objects(){};
   std::vector<Object> objects;
   bool isThereAnObject(int x, int y);
+  void createWall(int x, int y);
 
 };
 

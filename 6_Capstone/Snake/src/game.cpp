@@ -2,12 +2,19 @@
 #include <iostream>
 #include "SDL.h"
 
-Game::Game(std::size_t grid_width, std::size_t grid_height)
+Game::Game(std::size_t grid_width, std::size_t grid_height, bool withWall, bool withTreasures)
     : snake(grid_width, grid_height),
       engine(dev()),
       random_w(0, static_cast<int>(grid_width - 1)),
       random_h(0, static_cast<int>(grid_height - 1)) {
+
+  if (withWall){
+    objects.createWall(grid_width, grid_height);
+  }
   PlaceFood();
+  if (withTreasures){
+    treasure.setAlive(true);
+  }
 }
 
 void Game::Run(Controller const &controller, Renderer &renderer,
@@ -25,7 +32,7 @@ void Game::Run(Controller const &controller, Renderer &renderer,
     // Input, Update, Render - the main game loop.
     controller.HandleInput(running, snake);
     Update();
-    renderer.Render(snake, food, objects);
+    renderer.Render(snake, food, objects, treasure);
 
     frame_end = SDL_GetTicks();
 
@@ -98,6 +105,32 @@ void Game::PlaceObject() {
   }
 }
 
+void Game::PlaceTreasure() {
+  int x, y;
+  while (true) {
+    x = random_w(engine);
+    y = random_h(engine);
+    bool already_occupied {false};
+    
+    // Check that the location is not occupied by a snake item before placing
+    // the object
+
+    for (auto const &object : objects.objects){
+      if (object.x_ == x && object.y_ == y){
+        already_occupied = true;
+        break;
+      }
+    }
+
+    if (!snake.SnakeCell(x, y) && !(food.x == x && food.y == y) && !already_occupied) {
+      treasure.coordinate.x = x;
+      treasure.coordinate.y = y;
+      treasure.resetTiming();
+      return;
+    }
+  }
+}
+
 void Game::Update() {
   if (!snake.alive) return;
 
@@ -117,9 +150,22 @@ void Game::Update() {
     snake.GrowBody();
     snake.speed += 0.02;
   }
+
   if (objects.isThereAnObject(new_x, new_y) == true){
     snake.alive = false;
   }
+
+  if (treasure.isTreasure(new_x, new_y)){
+    if (treasure.totalTime != 0){
+      score += 5;
+      treasure.timing = 0;
+      snake.GrowBody();
+    }
+  }
+  if (treasure.totalTime == 0){
+    PlaceTreasure();
+  }
+  treasure.Update();
 }
 
 int Game::GetScore() const { return score; }

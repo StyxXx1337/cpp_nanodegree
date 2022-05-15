@@ -39,7 +39,7 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const &food, Objects const &objects) {
+void Renderer::Render(Snake const snake, SDL_Point const &food, Objects const &objects, Treasure const &treasure) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
@@ -54,8 +54,16 @@ void Renderer::Render(Snake const snake, SDL_Point const &food, Objects const &o
   block.y = food.y * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);
 
+  // Render treasure 
+  SDL_SetRenderDrawColor(sdl_renderer, 0x11, 0xCC, 0xCC, 0xFF);
+  block.x = treasure.coordinate.x * block.w;
+  block.y = treasure.coordinate.y * block.h;
+  if (treasure.timing > 0 && treasure.isAlive()) {
+    SDL_RenderFillRect(sdl_renderer, &block);
+  }
+
   // Render Objects 
-  SDL_SetRenderDrawColor(sdl_renderer, 0xEE, 0xEE, 0xEE, 0xFF);
+  SDL_SetRenderDrawColor(sdl_renderer, 0x99, 0x11, 0x11, 0xDD);
   for (auto const &object : objects.objects){
     block.x = object.x_ * block.w;
     block.y = object.y_ * block.h;

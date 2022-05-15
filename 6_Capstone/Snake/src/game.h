@@ -7,10 +7,11 @@
 #include "objects.h"
 #include "renderer.h"
 #include "snake.h"
+#include "treasure.h"
 
 class Game {
  public:
-  Game(std::size_t grid_width, std::size_t grid_height);
+  Game(std::size_t grid_width, std::size_t grid_height, bool withWall, bool withTreasures);
   void Run(Controller const &controller, Renderer &renderer,
            std::size_t target_frame_duration);
   int GetScore() const;
@@ -20,6 +21,7 @@ class Game {
   Snake snake;
   SDL_Point food;
   Objects objects;
+  Treasure treasure;
 
   std::random_device dev;
   std::mt19937 engine;
@@ -31,6 +33,7 @@ class Game {
   void PlaceFood();
   void Update();
   void PlaceObject();
+  void PlaceTreasure();
 };
 
 #endif
