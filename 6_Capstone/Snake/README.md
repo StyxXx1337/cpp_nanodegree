@@ -29,13 +29,15 @@ In this project, you can build your own C++ application or extend this Snake gam
 2. Make a build directory in the top level directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
 4. Run it: `./SnakeGame`.
+  4.1 use `-wall` to add walls
+  4.2 use `-treasure` to add treasures
 
 ## Added features
 
 1. [X] Added static objects that kill when you hit them
-2. [ ] Add Walls
+2. [X] Added Walls
 3. [ ] Add moving objects that kill you when you hit them
-4. [ ] Add special fruits that disappear after certain time again
+4. [X] Add special fruits that disappear after certain time again
 
 ## CC Attribution-ShareAlike 4.0 International
 
