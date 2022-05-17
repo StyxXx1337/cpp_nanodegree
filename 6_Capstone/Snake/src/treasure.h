@@ -14,13 +14,12 @@ public:
   void resetTiming();
   int currentTime() const;
   SDL_Point coordinate;
-  
+
   int timing;
   int totalTime;
 
 private:
-  bool alive {false};
-
+  bool alive{false};
 };
 
 #endif

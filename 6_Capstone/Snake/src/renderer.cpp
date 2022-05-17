@@ -6,10 +6,8 @@
 Renderer::Renderer(const std::size_t screen_width,
                    const std::size_t screen_height,
                    const std::size_t grid_width, const std::size_t grid_height)
-    : screen_width(screen_width),
-      screen_height(screen_height),
-      grid_width(grid_width),
-      grid_height(grid_height) {
+    : screen_width(screen_width), screen_height(screen_height),
+      grid_width(grid_width), grid_height(grid_height) {
   // Initialize SDL
   if (SDL_Init(SDL_INIT_VIDEO) < 0) {
     std::cerr << "SDL could not initialize.\n";
@@ -39,7 +37,8 @@ Renderer::~Renderer() {
   SDL_Quit();
 }
 
-void Renderer::Render(Snake const snake, SDL_Point const &food, Objects const &objects, Treasure const &treasure) {
+void Renderer::Render(Snake const snake, SDL_Point const &food,
+                      Objects const &objects, Treasure const &treasure) {
   SDL_Rect block;
   block.w = screen_width / grid_width;
   block.h = screen_height / grid_height;
@@ -54,7 +53,7 @@ void Renderer::Render(Snake const snake, SDL_Point const &food, Objects const &o
   block.y = food.y * block.h;
   SDL_RenderFillRect(sdl_renderer, &block);
 
-  // Render treasure 
+  // Render treasure
   SDL_SetRenderDrawColor(sdl_renderer, 0x11, 0xCC, 0xCC, 0xFF);
   block.x = treasure.coordinate.x * block.w;
   block.y = treasure.coordinate.y * block.h;
@@ -62,9 +61,9 @@ void Renderer::Render(Snake const snake, SDL_Point const &food, Objects const &o
     SDL_RenderFillRect(sdl_renderer, &block);
   }
 
-  // Render Objects 
+  // Render Objects
   SDL_SetRenderDrawColor(sdl_renderer, 0x99, 0x11, 0x11, 0xDD);
-  for (auto const &object : objects.objects){
+  for (auto const &object : objects.objects) {
     block.x = object.x_ * block.w;
     block.y = object.y_ * block.h;
     SDL_RenderFillRect(sdl_renderer, &block);
@@ -93,6 +92,7 @@ void Renderer::Render(Snake const snake, SDL_Point const &food, Objects const &o
 }
 
 void Renderer::UpdateWindowTitle(int score, int fps) {
-  std::string title{"Snake Score: " + std::to_string(score) + " FPS: " + std::to_string(fps)};
+  std::string title{"Snake Score: " + std::to_string(score) +
+                    " FPS: " + std::to_string(fps)};
   SDL_SetWindowTitle(sdl_window, title.c_str());
 }

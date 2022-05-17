@@ -73,7 +73,7 @@ void Game::PlaceFood() {
       }
     }
 
-    if (!snake.SnakeCell(x, y)) {
+    if (!snake.SnakeCell(x, y) && !already_occupied) {
       food.x = x;
       food.y = y;
       return;

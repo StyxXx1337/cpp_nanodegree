@@ -1,9 +1,9 @@
-#include <cstddef>
-#include <iostream>
 #include "argsparser.h"
 #include "controller.h"
 #include "game.h"
 #include "renderer.h"
+#include <cstddef>
+#include <iostream>
 
 int main(int argc, char **argv) {
   constexpr std::size_t kFramesPerSecond{60};
@@ -14,7 +14,7 @@ int main(int argc, char **argv) {
   constexpr std::size_t kGridHeight{32};
   std::vector<std::string> args;
 
-  for (size_t i = 0; i < argc; ++i){
+  for (size_t i = 0; i < argc; ++i) {
     args.emplace_back(argv[i]);
   }
 
