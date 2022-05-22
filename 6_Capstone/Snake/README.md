@@ -44,6 +44,7 @@ In this project, you can build your own C++ application or extend this Snake gam
 
 1. Moving Objects crash into snake will not cause the game to finish (will not change)
 2. Argument for Objects not implemented yet.
+3. Walls not enclose whole game field
 
 ## CC Attribution-ShareAlike 4.0 International
 
