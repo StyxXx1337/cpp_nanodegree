@@ -19,12 +19,15 @@ int main(int argc, char **argv) {
   }
 
   ArgParser argParser(std::move(args));
+  argParser.PrintArgs();
   auto withWall = argParser.withWall();
   auto withTreasures = argParser.withTreasures();
+  auto speed = argParser.getSpeed();
+  auto withObjects = argParser.withObjects();
 
   Renderer renderer(kScreenWidth, kScreenHeight, kGridWidth, kGridHeight);
   Controller controller;
-  Game game(kGridWidth, kGridHeight, withWall, withTreasures);
+  Game game(kGridWidth, kGridHeight, withWall, withTreasures, withObjects, speed);
   game.Run(controller, renderer, kMsPerFrame);
   std::cout << "Game has terminated successfully!\n";
   std::cout << "Score: " << game.GetScore() << "\n";

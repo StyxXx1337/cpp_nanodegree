@@ -1,12 +1,16 @@
 #include "game.h"
 #include <iostream>
 #include "SDL.h"
+#include <iostream>
 
-Game::Game(std::size_t grid_width, std::size_t grid_height, bool withWall, bool withTreasures)
+Game::Game(std::size_t grid_width, std::size_t grid_height, bool withWall, bool withTreasures, bool withObjects, int speed)
     : snake(grid_width, grid_height),
       engine(dev()),
       random_w(0, static_cast<int>(grid_width - 1)),
-      random_h(0, static_cast<int>(grid_height - 1)) {
+      random_h(0, static_cast<int>(grid_height - 1)),
+      width(grid_width),
+      height(grid_height),
+      speed(speed){
 
   if (withWall){
     objects.createWall(grid_width, grid_height);
@@ -99,7 +103,17 @@ void Game::PlaceObject() {
     }
 
     if (!snake.SnakeCell(x, y) && !(food.x == x && food.y == y) && !already_occupied) {
-      objects.objects.push_back(Object(x, y));
+      float speed_x = 0.0f;
+      float speed_y = 0.0f;
+
+      if (objects.objects.size() % 2 == 0){
+        speed_x = speed * 0.02;
+      }
+      else{
+        speed_y = speed * 0.02;
+      }
+
+      objects.objects.push_back(Object(x, y, speed_x, speed_y, GetGameHeight(), GetGameWidth()));
       return;
     }
   }
@@ -135,6 +149,9 @@ void Game::Update() {
   if (!snake.alive) return;
 
   snake.Update();
+  for (auto &obj : objects.objects){
+    obj.Update();
+  }
 
   int new_x = static_cast<int>(snake.head_x);
   int new_y = static_cast<int>(snake.head_y);
@@ -143,7 +160,7 @@ void Game::Update() {
   if (food.x == new_x && food.y == new_y) {
     score++;
     PlaceFood();
-    if (score % 10 == 0){
+    if (score % 4 == 0){
       PlaceObject();
     }
     // Grow snake and increase speed.
@@ -170,3 +187,6 @@ void Game::Update() {
 
 int Game::GetScore() const { return score; }
 int Game::GetSize() const { return snake.size; }
+int Game::GetGameWidth() const { return width; }
+int Game::GetGameHeight() const { return height; }
+int Game::GetSpeed() const { return speed; }
