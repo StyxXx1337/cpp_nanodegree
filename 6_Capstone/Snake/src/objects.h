@@ -7,8 +7,6 @@
 
 class Object {
 public:
-  Object(float x, float y) : x_(x), y_(y){};
-  Object(float x, float y, float sx, float sy) : x_(x), y_(y), speed_x(sx), speed_y(sy){};
   Object(float x, float y, float sx, float sy, int h, int w)
       : x_(x), y_(y), speed_x(sx), speed_y(sy), grid_height(h), grid_width(w){};
   void GridSize(int h, int w);

@@ -63,6 +63,7 @@ void Renderer::Render(Snake const snake, SDL_Point const &food,
 
   // Render Objects
   SDL_SetRenderDrawColor(sdl_renderer, 0x99, 0x11, 0x11, 0xDD);
+  // std::cerr << "Objects Size: "<< objects.objects.size() << "\n";
   for (auto const &object : objects.objects) {
     block.x = object.x_ * block.w;
     block.y = object.y_ * block.h;

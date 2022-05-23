@@ -1,22 +1,22 @@
 #include "game.h"
-#include <iostream>
 #include "SDL.h"
 #include <iostream>
 
-Game::Game(std::size_t grid_width, std::size_t grid_height, bool withWall, bool withTreasures, bool withObjects, int speed)
-    : snake(grid_width, grid_height),
-      engine(dev()),
+Game::Game(std::size_t grid_width, std::size_t grid_height, bool withWall,
+           bool withTreasures, bool withObj, int speed)
+    : snake(grid_width, grid_height), engine(dev()),
       random_w(0, static_cast<int>(grid_width - 1)),
-      random_h(0, static_cast<int>(grid_height - 1)),
-      width(grid_width),
-      height(grid_height),
-      speed(speed){
+      random_h(0, static_cast<int>(grid_height - 1)), width(grid_width),
+      height(grid_height), speed(speed) {
 
-  if (withWall){
+  if (withWall) {
     objects.createWall(grid_width, grid_height);
   }
+  if (withObj) {
+    withObjects = true;
+  }
   PlaceFood();
-  if (withTreasures){
+  if (withTreasures) {
     treasure.setAlive(true);
   }
 }
@@ -66,12 +66,12 @@ void Game::PlaceFood() {
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
-    bool already_occupied {false};
+    bool already_occupied{false};
     // Check that the location is not occupied by a snake item before placing
     // food.
 
-    for (auto const &object : objects.objects){
-      if (object.x_ == x && object.y_ == y){
+    for (auto const &object : objects.objects) {
+      if (object.x_ == x && object.y_ == y) {
         already_occupied = true;
         break;
       }
@@ -90,30 +90,31 @@ void Game::PlaceObject() {
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
-    bool already_occupied {false};
-    
+    bool already_occupied{false};
+
     // Check that the location is not occupied by a snake item before placing
     // the object
 
-    for (auto const &object : objects.objects){
-      if (object.x_ == x && object.y_ == y){
+    for (auto const &object : objects.objects) {
+      if (object.x_ == x && object.y_ == y) {
         already_occupied = true;
         break;
       }
     }
 
-    if (!snake.SnakeCell(x, y) && !(food.x == x && food.y == y) && !already_occupied) {
+    if (!snake.SnakeCell(x, y) && !(food.x == x && food.y == y) &&
+        !already_occupied) {
       float speed_x = 0.0f;
       float speed_y = 0.0f;
 
-      if (objects.objects.size() % 2 == 0){
+      if (objects.objects.size() % 2 == 0) {
         speed_x = speed * 0.02;
-      }
-      else{
+      } else {
         speed_y = speed * 0.02;
       }
 
-      objects.objects.push_back(Object(x, y, speed_x, speed_y, GetGameHeight(), GetGameWidth()));
+      objects.objects.push_back(
+          Object(x, y, speed_x, speed_y, GetGameHeight(), GetGameWidth()));
       return;
     }
   }
@@ -124,19 +125,20 @@ void Game::PlaceTreasure() {
   while (true) {
     x = random_w(engine);
     y = random_h(engine);
-    bool already_occupied {false};
-    
+    bool already_occupied{false};
+
     // Check that the location is not occupied by a snake item before placing
     // the object
 
-    for (auto const &object : objects.objects){
-      if (object.x_ == x && object.y_ == y){
+    for (auto const &object : objects.objects) {
+      if (object.x_ == x && object.y_ == y) {
         already_occupied = true;
         break;
       }
     }
 
-    if (!snake.SnakeCell(x, y) && !(food.x == x && food.y == y) && !already_occupied) {
+    if (!snake.SnakeCell(x, y) && !(food.x == x && food.y == y) &&
+        !already_occupied) {
       treasure.coordinate.x = x;
       treasure.coordinate.y = y;
       treasure.resetTiming();
@@ -146,10 +148,11 @@ void Game::PlaceTreasure() {
 }
 
 void Game::Update() {
-  if (!snake.alive) return;
+  if (!snake.alive)
+    return;
 
   snake.Update();
-  for (auto &obj : objects.objects){
+  for (auto &obj : objects.objects) {
     obj.Update();
   }
 
@@ -160,7 +163,7 @@ void Game::Update() {
   if (food.x == new_x && food.y == new_y) {
     score++;
     PlaceFood();
-    if (score % 4 == 0){
+    if ((score % 4 == 0) && withObjects) {
       PlaceObject();
     }
     // Grow snake and increase speed.
@@ -168,18 +171,18 @@ void Game::Update() {
     snake.speed += 0.02;
   }
 
-  if (objects.isThereAnObject(new_x, new_y) == true){
+  if (objects.isThereAnObject(new_x, new_y) == true) {
     snake.alive = false;
   }
 
-  if (treasure.isTreasure(new_x, new_y)){
-    if (treasure.totalTime != 0){
+  if (treasure.isTreasure(new_x, new_y)) {
+    if (treasure.totalTime != 0) {
       score += 5;
       treasure.timing = 0;
       snake.GrowBody();
     }
   }
-  if (treasure.totalTime == 0){
+  if (treasure.totalTime == 0) {
     PlaceTreasure();
   }
   treasure.Update();

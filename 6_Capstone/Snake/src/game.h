@@ -36,6 +36,7 @@ private:
   int speed{0};
   int height;
   int width;
+  bool withObjects{false};
 
   void PlaceFood();
   void Update();

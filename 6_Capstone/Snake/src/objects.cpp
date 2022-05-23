@@ -1,23 +1,18 @@
 #include "objects.h"
 #include <iostream>
 
-
-void Object::Update(){
-  SDL_Point prev_cell{
-      static_cast<int>(x_),
-      static_cast<int>(y_)};
+void Object::Update() {
+  SDL_Point prev_cell{static_cast<int>(x_), static_cast<int>(y_)};
   x_ += speed_x;
   y_ += speed_y;
-  
-  SDL_Point current_cell{
-      static_cast<int>(x_),
-      static_cast<int>(y_)};
+
+  SDL_Point current_cell{static_cast<int>(x_), static_cast<int>(y_)};
 
   x_ = fmod(x_ + grid_width, grid_width);
   y_ = fmod(y_ + grid_height, grid_height);
 }
 
-void Object::GridSize(int h, int w){
+void Object::GridSize(int h, int w) {
   grid_height = h;
   grid_width = w;
 }
@@ -36,13 +31,13 @@ void Objects::createWall(int x_max, int y_max) {
   int y{0};
 
   while (x <= x_max) {
-    objects.push_back(Object(x, 0));
-    objects.push_back(Object(x, y_max - 1));
+    objects.push_back(Object(x, 0, 0, 0, x_max, y_max));
+    objects.push_back(Object(x, y_max - 1, 0, 0, x_max, y_max));
     ++x;
   }
   while (y <= y_max) {
-    objects.push_back(Object(0, y));
-    objects.push_back(Object(x_max - 1, y));
+    objects.push_back(Object(0, y, 0, 0, x_max, y_max));
+    objects.push_back(Object(x_max - 1, y, 0, 0, x_max, y_max));
     ++y;
   }
 }

@@ -13,7 +13,6 @@ public:
   int getSpeed(void);
   void PrintArgs(void);
 
-
 private:
   std::vector<std::string> args_;
 };

@@ -31,7 +31,7 @@ In this project, you can build your own C++ application or extend this Snake gam
 4. Run it: `./SnakeGame`.
   4.1 use `-wall` to add walls
   4.2 use `-treasure` to add treasures
-  4.3 use `-objects` to add objects and `-speed` to set their speed level (1-10)
+  4.3 use `-objects` to add objects and `-speed` to set their speed level (1-10)\ If speed is not given it is set to 0.
 
 ## Added features
 
@@ -43,8 +43,6 @@ In this project, you can build your own C++ application or extend this Snake gam
 ## Known issues
 
 1. Moving Objects crash into snake will not cause the game to finish (will not change)
-2. Argument for Objects not implemented yet.
-3. Walls not enclose whole game field
 
 ## CC Attribution-ShareAlike 4.0 International
 
