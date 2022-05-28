@@ -28,7 +28,7 @@ In this project, you can build your own C++ application or extend this Snake gam
 1. Clone this repo.
 2. Make a build directory in the top level directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
-4. Run it: `./SnakeGame`.
+4. Run basic game with: `./SnakeGame`.
   4.1 use `-wall` to add walls: `./SnakeGame -wall`
   4.2 use `-treasure` to add treasures: `./SnakeGame -treasure`
   4.3 use `-objects` to add objects and `-speed` to set their speed level (1-10)\ If speed is not given it is set to 0. `./SnakeGame -objects -speed 2`
@@ -44,6 +44,8 @@ In this project, you can build your own C++ application or extend this Snake gam
 ## Known issues
 
 1. Moving Objects crash into snake will not cause the game to finish (will not change)
+
+## Folder and Object Structure
 
 
 ## Covered Project Rubics of Udacity Project:
