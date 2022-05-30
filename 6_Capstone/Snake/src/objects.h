@@ -9,6 +9,7 @@ class Object {
 public:
   Object(float x, float y, float sx, float sy, int h, int w)
       : x_(x), y_(y), speed_x(sx), speed_y(sy), grid_height(h), grid_width(w){};
+  ~Object()=default;
   void GridSize(int h, int w);
   void Update();
 

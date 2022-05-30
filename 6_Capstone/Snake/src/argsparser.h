@@ -7,6 +7,7 @@
 class ArgParser {
 public:
   ArgParser(std::vector<std::string> &&args) : args_(args){};
+  ~ArgParser()=default;
   bool withWall(void);
   bool withTreasures(void);
   bool withObjects(void);

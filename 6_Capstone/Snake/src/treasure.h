@@ -7,6 +7,7 @@ class Treasure {
 public:
   Treasure();
   Treasure(int x, int y);
+  ~Treasure()=default;
   void Update(void);
   bool isTreasure(int x, int y);
   void setAlive(bool b);
