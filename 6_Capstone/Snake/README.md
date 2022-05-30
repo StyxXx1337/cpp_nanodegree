@@ -80,15 +80,7 @@ Snake
 ```
 
 ## Object Structure
-``` mermaid
-flowchart Snake 
-    A(main) --> B(ArgsParser);
-    A(main) --> C(Renderer);
-    A(main) --> D(Game);
-    B --> D;
-    D --> E(Snake);
-    D --> F(Objects);
-```
+
 The `main.cpp` function calls the `ArgsParser` to read in the game options from the user.
 With the arguments received by the `ArgParser` the main function first initiates a `Renderer` to show the basic game window.
 After that creates a `Controller` to read the key strokes from the user.
